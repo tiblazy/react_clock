@@ -16,16 +16,16 @@ export class App extends Component<{}, State> {
 
   nameTimerId = 0;
 
-  // handleContextMenuClick(event: MouseEvent) {
-  //   event.preventDefault();
-  //   this.setState({ hasClock: false });
-  // }
+  handleContextMenu = (event: MouseEvent) => {
+    event.preventDefault();
+    this.setState({ hasClock: false });
+  };
 
-  // handleClick() {
-  //   this.setState({
-  //     hasClock: true,
-  //   });
-  // }
+  handleClick = () => {
+    this.setState({
+      hasClock: true,
+    });
+  };
 
   componentDidMount(): void {
     this.nameTimerId = window.setInterval(() => {
@@ -33,14 +33,9 @@ export class App extends Component<{}, State> {
         clockName: getRandomName(),
       });
     }, 3300);
-    document.addEventListener('contextmenu', (event: MouseEvent) => {
-      event.preventDefault();
-      this.setState({ hasClock: false });
-    });
+    document.addEventListener('contextmenu', this.handleContextMenu);
 
-    document.addEventListener('click', () => {
-      this.setState({ hasClock: true });
-    });
+    document.addEventListener('click', this.handleClick);
   }
 
   componentDidUpdate(
@@ -49,6 +44,7 @@ export class App extends Component<{}, State> {
   ): void {
     if (prevState.clockName !== this.state.clockName) {
       if (this.state.hasClock) {
+        // eslint-disable-next-line no-console
         console.warn(
           `Renamed from ${prevState.clockName} to ${this.state.clockName}`,
         );
@@ -61,15 +57,8 @@ export class App extends Component<{}, State> {
       window.clearInterval(this.nameTimerId);
     }
 
-    document.removeEventListener('contextmenu', (event: MouseEvent) => {
-      event.preventDefault();
-
-      this.setState({ hasClock: false });
-    });
-
-    document.removeEventListener('click', () => {
-      this.setState({ hasClock: true });
-    });
+    document.removeEventListener('contextmenu', this.handleContextMenu);
+    document.removeEventListener('click', this.handleClick);
   }
 
   render() {

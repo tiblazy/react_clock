@@ -23,6 +23,7 @@ export class Clock extends Component<Props, State> {
         time: updateTime,
       });
 
+      // eslint-disable-next-line no-console
       console.log(updateTime);
     }, 1000);
   }
